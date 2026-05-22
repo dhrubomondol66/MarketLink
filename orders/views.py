@@ -30,6 +30,8 @@ class RepairOrderListCreateView(generics.ListCreateAPIView):
     
     def get_queryset(self):
         user = self.request.user
+        if not user.is_authenticated:
+            return RepairOrder.objects.none()
         queryset = RepairOrder.objects.select_related(
             'customer', 'vendor__user', 'variant__service'
         )
@@ -117,6 +119,8 @@ class RepairOrderDetailView(generics.RetrieveAPIView):
     
     def get_queryset(self):
         user = self.request.user
+        if not user.is_authenticated:
+            return RepairOrder.objects.none()
         queryset = RepairOrder.objects.select_related(
             'customer', 'vendor__user', 'variant__service'
         )

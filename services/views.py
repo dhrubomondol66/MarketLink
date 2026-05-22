@@ -36,6 +36,8 @@ class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         if self.request.method == 'GET':
             return Service.objects.filter(is_active=True).select_related('vendor__user').prefetch_related('variants')
+        if not self.request.user.is_authenticated:
+            return Service.objects.none()
         return Service.objects.filter(vendor__user=self.request.user).select_related('vendor__user').prefetch_related('variants')
 
 
@@ -61,4 +63,6 @@ class ServiceVariantDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
     
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return ServiceVariant.objects.none()
         return ServiceVariant.objects.filter(service__vendor__user=self.request.user)

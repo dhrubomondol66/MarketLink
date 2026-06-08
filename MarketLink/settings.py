@@ -92,9 +92,11 @@ WSGI_APPLICATION = 'MarketLink.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+_DB_ENGINE = env('DB_ENGINE', default='django.db.backends.postgresql')
+
 DATABASES = {
     'default': {
-        'ENGINE': env('DB_ENGINE', default='django.db.backends.postgresql'),
+        'ENGINE': _DB_ENGINE,
         'NAME': env('DB_NAME', default='marketlink'),
         'USER': env('DB_USER', default='marketlink_user'),
         'PASSWORD': env('DB_PASSWORD', default='marketlink_password'),
@@ -102,11 +104,13 @@ DATABASES = {
         'PORT': env('DB_PORT', default='5432'),
         'ATOMIC_REQUESTS': True,
         'CONN_MAX_AGE': 600,
-        'OPTIONS': {
-            'connect_timeout': 10,
-        }
     }
 }
+
+if 'postgresql' in _DB_ENGINE:
+    DATABASES['default']['OPTIONS'] = {
+        'connect_timeout': 10,
+    }
 
 
 # Password validation

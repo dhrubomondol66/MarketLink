@@ -46,4 +46,6 @@ class VendorProfileDetailView(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         if self.request.method == 'GET':
             return self.queryset.filter(is_active=True)
+        if not self.request.user.is_authenticated:
+            return VendorProfile.objects.none()
         return self.queryset.filter(user=self.request.user)

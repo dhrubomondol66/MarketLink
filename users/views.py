@@ -9,6 +9,7 @@ from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserSe
 
 
 class UserRegistrationView(generics.CreateAPIView):
+    authentication_classes = []
     permission_classes = (AllowAny,)
     serializer_class = UserRegistrationSerializer
     
@@ -29,6 +30,7 @@ class UserRegistrationView(generics.CreateAPIView):
 
 
 class UserLoginView(APIView):
+    authentication_classes = []
     permission_classes = (AllowAny,)
     serializer_class = UserLoginSerializer
     
